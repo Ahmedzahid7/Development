@@ -1,0 +1,47 @@
+name: Environment File Handler
+
+on:
+  push:
+    paths:
+      - 'dev'
+      - 'staging'
+      - 'deployment'
+  pull_request:
+    paths:
+      - 'dev'
+      - 'staging'
+      - 'deployment'
+
+jobs:
+  dev_job:
+    if: contains(github.event.head_commit.message, 'dev') || github.event_name == 'pull_request' && contains(toJson(github.event.pull_request.changed_files), 'dev')
+    runs-on: ubuntu-latest
+    name: Handle Dev File
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Dev Job
+        run: echo "Running job for DEV file changes"
+
+  staging_job:
+    if: contains(github.event.head_commit.message, 'staging') || github.event_name == 'pull_request' && contains(toJson(github.event.pull_request.changed_files), 'staging')
+    runs-on: ubuntu-latest
+    name: Handle Staging File
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Staging Job
+        run: echo "Running job for STAGING file changes"
+
+  deployment_job:
+    if: contains(github.event.head_commit.message, 'deployment') || github.event_name == 'pull_request' && contains(toJson(github.event.pull_request.changed_files), 'deployment')
+    runs-on: ubuntu-latest
+    name: Handle Deployment File
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Deployment Job
+        run: echo "Running job for DEPLOYMENT file changes"
